@@ -30,39 +30,36 @@ comportement de l'algorithme de détéction de mouvement :
 
 event = 'NULL'
 
+#joue la piste sonore reçue
 def play_sound(piste):
-	"joue la piste sonore reçue"
 
+#compare les pixels d'une succession de capture afin de détécter le mouvement (méthode à définir)
 def frame_compare(frame_list):
-	"""compare les pixels d'une succession de capture afin de détécter le mouvement (méthode à définir)"""
 
+#permet d'envoyer des requetes au serveur
 def send()
-	"""permet d'envoyer des requetes au serveur"""
 
-
+#permet de recevoir les requêtes du serveur
 def receive()
-	"""permet de recevoir les requêtes du serveur"""
 
+#stoque les dernières frames pour les comparaisons
 def update_stream(last_frame, frame_list)
 	liste = frame_list
-	"""stoque les dernières frames pour les comparaisons"
 	list.add(last_frame)
 	if len(list) < size:v
 		list.remove() #retire le plus ancien
 	return list
 
+#retourne true s'il un mouvement est détécté
 def moovement_trigger(frame_list, seuil):
-	"""retourne true s'il un mouvement est détécté"""
-
 	difference = frame_compare(frame_list)
 	if difference > seuil:
 		return True
 	else:
 		return False
-
-def camera_surveillance()
-	"""bloucle principale du programme"""
-
+		
+#bloucle principale du programme
+def camera_surveillance():
 	open_camera()
 	send('start')
 
