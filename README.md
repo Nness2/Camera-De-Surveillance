@@ -30,49 +30,48 @@ comportement de l'algorithme de détéction de mouvement :
 
 event = 'NULL'
 
-
 def play_sound(piste): #joue la piste sonore reçue
 
 
 def frame_compare(frame_list): #compare les pixels d'une succession de capture afin de détécter le mouvement (méthode à définir)
 
 
-def send() #permet d'envoyer des requetes au serveur
+def send(): #permet d'envoyer des requetes au serveur
 
 
-def receive#permet de recevoir les requêtes du serveur
+def receive(): #permet de recevoir les requêtes du serveur
 
-#stoque les dernières frames pour les comparaisons
-def update_stream(last_frame, frame_list)
+
+def update_stream(last_frame, frame_list): #stoque les dernières frames pour les comparaisons
 	liste = frame_list
 	list.add(last_frame)
-	if len(list) < size:v
+	if len(list) < size:
 		list.remove() #retire le plus ancien
 	return list
 
-#retourne true s'il un mouvement est détécté
-	def moovement_trigger(frame_list, seuil):
-		difference = frame_compare(frame_list)
-		if difference > seuil:
-			return True
-		else:
-			return False
+
+def moovement_trigger(frame_list, seuil): #retourne true s'il un mouvement est détécté
+	difference = frame_compare(frame_list)
+	if difference > seuil:
+		return True
+	else:
+		return False
 		
 
-	def camera_surveillance(): #bloucle principale du programme
-		open_camera()
-		send('start')
-		while (True):
-			list = update_stream()
-			rcv = receive()
-			if moovemet_trigger(list, seuil):
-				send('snap:'+base64)
-			if rcv == 'stream':
-				send('stream:'+stream_data)
-			if rcv == 'stop':
-				stop_stream()
-			if rcv == 'sound':
-				play_sound(sound)
+def camera_surveillance(): #bloucle principale du programme
+	open_camera()
+	send('start')
+	while (True):
+		list = update_stream()
+		rcv = receive()
+		if moovemet_trigger(list, seuil):
+			send('snap:'+base64)
+		if rcv == 'stream':
+			send('stream:'+stream_data)
+		if rcv == 'stop':
+			stop_stream()
+		if rcv == 'sound':
+			play_sound(sound)
 
 
 
