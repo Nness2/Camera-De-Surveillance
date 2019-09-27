@@ -58,6 +58,7 @@ def receive(): #permet de recevoir les requêtes du serveur
 			return False
 		
 #bloucle principale du programme
+
 	def camera_surveillance(): 
 		open_camera()
 		send('start')
