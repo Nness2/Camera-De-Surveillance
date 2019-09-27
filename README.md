@@ -85,6 +85,7 @@ Reçoie "stop" lorsque le client ferme le flux.
 Reçoie "sound: piste" lorsque le client choisie d'envoyer un son. "piste" correspond au nom de la piste sonore choisie.
 
 
-Diagramme de Gantt
+Diagramme de Gantt:
+
 ![picture](img/gantt.png)
 
