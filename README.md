@@ -39,10 +39,10 @@ def frame_compare(frame_list):
 /*permet d'envoyer des requetes au serveur*/
 def send()
 
-permet de recevoir les requêtes du serveur
+permet de recevoir les requêtes du serveur\n
 def receive()
 
-#stoque les dernières frames pour les comparaisons.
+#stoque les dernières frames pour les comparaisons\n
 def update_stream(last_frame, frame_list)
 	liste = frame_list
 	list.add(last_frame)
