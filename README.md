@@ -30,18 +30,28 @@ comportement de l'algorithme de détéction de mouvement :
 
 event = 'NULL'
 
-def play_sound(piste): #joue la piste sonore reçue
+#joue la piste sonore reçue
+
+	def play_sound(piste): 
 
 
-def frame_compare(frame_list): #compare les pixels d'une succession de capture afin de détécter le mouvement (méthode à définir)
+#compare les pixels d'une succession de capture afin de détécter le mouvement (méthode à définir)
+
+	def frame_compare(frame_list): 	
 
 
-def send(): #permet d'envoyer des requetes au serveur
+#permet d'envoyer des requetes au serveur
+
+	def send(): 
 
 
-def receive(): #permet de recevoir les requêtes du serveur
+#permet de recevoir les requêtes du serveur
+
+	def receive(): 
+
 
 #stoque les dernières frames pour les comparaisons
+
 	def update_stream(last_frame, frame_list): 
 		liste = frame_list
 		list.add(last_frame)
@@ -49,13 +59,16 @@ def receive(): #permet de recevoir les requêtes du serveur
 			list.remove() #retire le plus ancien
 		return list
 
+
  #retourne true s'il un mouvement est détécté
+ 
 	def moovement_trigger(frame_list, seuil):
 		difference = frame_compare(frame_list)
 		if difference > seuil:
 			return True
 		else:
 			return False
+		
 		
 #bloucle principale du programme
 
