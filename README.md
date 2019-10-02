@@ -91,9 +91,9 @@ event = 'NULL'
 
 le modèle de données pour ce type de projet est le suivant:
 
-Envoie un string contenant "start" au démarage.
+Envoie un string contenant "start: name" au démarage.
 Envoie un string contenant "snap: base64" lors d'un mouvement.
-Envoie un string contenant une succession de "stream: base64" lors ce que l'on demande le flux en directe.
+Envoie un string contenant une succession de "stream: [215, 255, 0, 123 ...]" lorsque l'on demande le flux en directe.
 Reçoie "stream" lorsque le client clique sur l'image d'un mouvement.	
 Reçoie "stop" lorsque le client ferme le flux.
 Reçoie "sound: piste" lorsque le client choisie d'envoyer un son. "piste" correspond au nom de la piste sonore choisie.
