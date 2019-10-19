@@ -1,0 +1,94 @@
+<html>
+<body>
+<!-- Stream video via webcam -->
+<div class="video-wrap">
+  <video id="video" playsinline autoplay></video>
+</div>
+
+<!-- Trigger canvas web API -->
+<div class="controller">
+  <button id="snap">Capture</button>
+</div>
+
+<!-- Webcam video snapshot -->
+<canvas id="canvas" width="640" height="480"></canvas>
+
+
+<script>
+    'use strict';
+/*
+    var PORT = 33333;
+    var HOST = '127.0.0.1';
+
+    var dgram = require('dgram');
+    var message = new Buffer('frame: ' + frame);
+
+    var client = dgram.createSocket('udp4');
+    client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+        if (err) throw err;
+        console.log('UDP message sent to ' + HOST +':'+ PORT);
+        client.close();
+    });
+*/
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById("snap");
+    const errorMsgElement = document.querySelector('span#errorMsg');
+
+    var BASE64_MARKER = ';base64,';
+
+    const constraints = {
+        audio: false,
+        video: {
+            width: 640, height: 480
+        }
+    };
+
+    // Access webcam
+    async function init() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            handleSuccess(stream);
+        } catch (e) {
+            errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+        }
+    }
+
+    // Success
+    function handleSuccess(stream) {
+        window.stream = stream;
+        video.srcObject = stream;
+    }
+
+    // Load init
+    init();
+    // Draw image
+    var context = canvas.getContext('2d');
+
+    snap.addEventListener("click", function() {
+
+        context.drawImage(video, 0, 0, 640, 480);
+        var imageData = context.getImageData(0, 0, 640, 480);
+
+
+        for (var i = 0, n = imageData.data.length; i < n; i += 4){
+            var moy = (imageData.data[i] + imageData.data[i+1] + imageData.data[i+2]) / 3
+            imageData.data[i] = moy;
+            imageData.data[i + 1] = moy;
+            imageData.data[i + 2] = moy;
+        }
+
+        context.putImageData(imageData, 0, 0);
+        console.log(imageData);
+    });
+
+
+
+</script>
+
+
+</body>
+
+
+</html>
