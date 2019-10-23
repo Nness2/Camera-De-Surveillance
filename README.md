@@ -89,9 +89,9 @@ event = 'NULL'
 
 
 
-Modèle de données / Protocole :\
+Modèle de données / Protocole :  
 
-Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des cameras connecté.\
+Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des cameras connecté.  
 Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
 
 Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".  
@@ -99,27 +99,27 @@ Bouton Stream : Envoie "stream" au client puis attend un flux vidéo en binaire 
 Bouton Stop : Envoie "stop" au client.  
 Bouton Alarme : Envoie "alarm" au client.  
 
-Dans la liste de cameras :
--Si le nom de la camera est verte cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.
- Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.
--Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste et enregistre une image en base64. "detected: <string>".
-Bouton Mouvement : S'il y en a une, affiche l'image du mouvement correspondant à la camera. Le nom redevient gris.
-Si un client ne répond pas, on le retire de la liste.
+Dans la liste de cameras :  
+-Si le nom de la camera est verte cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.  
+ Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.  
+-Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste et enregistre une image en base64. "detected: <string>".  
+Bouton Mouvement : S'il y en a une, affiche l'image du mouvement correspondant à la camera. Le nom redevient gris.  
+Si un client ne répond pas, on le retire de la liste.  
 
-Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des cameras connecté.
-Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.
+Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des cameras connecté.  
+Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
 
-Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".
-Bouton Stream : Envoie "stream" au client puis attend un flux vidéo en binaire qui sera affiché à l'écran (1 octet par pixel, noir et blanc) 640*360. Le tout encodé en H.240.
-Bouton Stop : Envoie "stop" au client.
-Bouton Alarme : Envoie "alarm" au client.
+Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".  
+Bouton Stream : Envoie "stream" au client puis attend un flux vidéo en binaire qui sera affiché à l'écran (1 octet par pixel, noir et blanc) 640*360. Le tout encodé en H.240.  
+Bouton Stop : Envoie "stop" au client.  
+Bouton Alarme : Envoie "alarm" au client.  
 
-Dans la liste de cameras :
--Si le nom de la camera est verte cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.
- Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.
--Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste et enregistre une image en base64. "detected: <string>".
-Bouton Mouvement : S'il y en a une, affiche l'image du mouvement correspondant à la camera. Le nom redevient gris.
-Si un client ne répond pas, on le retire de la liste.
+Dans la liste de cameras :  
+-Si le nom de la camera est verte cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.  
+ Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.  
+-Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste et enregistre une image en base64. "detected: <string>".  
+Bouton Mouvement : S'il y en a une, affiche l'image du mouvement correspondant à la camera. Le nom redevient gris.  
+Si un client ne répond pas, on le retire de la liste.  
 
 
 Diagramme de Gantt:
