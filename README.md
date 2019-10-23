@@ -20,6 +20,8 @@ Enfin, il y a sur la page serveur des boutons permettant, à n'importe quel mome
 
 
 
+
+
 Programme à implémenter:
 
 La première étape du développement consistera en la mise en place d'un programme capable de détécter le mouvement.
@@ -121,6 +123,9 @@ Dans la liste de cameras :
 Bouton Mouvement : S'il y en a une, affiche l'image du mouvement correspondant à la camera. Le nom redevient gris.  
 Si un client ne répond pas, on le retire de la liste.  
 
+Visualization:
+
+![picture](img/SetUp.png)
 
 Diagramme de Gantt:
 
