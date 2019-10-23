@@ -78,6 +78,22 @@
             imageData.data[i + 1] = moy;
             imageData.data[i + 2] = moy;
         }
+      
+        //découpage de l'image non fonctionnel
+        /*for(var k = 0; k <= 24; k++){
+
+			      for(var l = 0; l <= 32; l++){
+
+				        for(var i = 20*k; i <= (20*k)+i+20  ; i+=4 ){
+
+					          for(var j = 20*l; j<= (20*l)+j+20; j+=4 ){
+
+						            tab += imageData.data[j+ (640*i)];
+					          }	
+				         }
+			       }
+		      }
+		*/
 
         context.putImageData(imageData, 0, 0);
         console.log(imageData);
