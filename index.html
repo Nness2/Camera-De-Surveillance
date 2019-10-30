@@ -35,6 +35,8 @@
     const canvas = document.getElementById('canvas');
     const snap = document.getElementById("snap");
     const errorMsgElement = document.querySelector('span#errorMsg');
+	var moyBase = new Array ();
+	var bool = 0;
 
     var BASE64_MARKER = ';base64,';
 
@@ -78,6 +80,42 @@
             imageData.data[i + 1] = moy;
             imageData.data[i + 2] = moy;
         }
+
+        
+        var tab_moyenne = new Array();
+        var moyenne = 0;
+        for(var i = 0 ; i < 480*4 ; i=i+80){
+            for(var j = 0; j < 640*4 ; j=j+80){
+                for(var yp = i; yp < i+80 ; yp=yp+4){
+                    for(var xp = j; xp < j +80; xp=xp+4){
+                        
+                        var moyenne = moyenne + imageData.data[yp * 640 + xp];
+                            
+                   }
+                }
+                tab_moyenne.push(moyenne/400);
+                moyenne = 0;
+            }
+
+        }
+		if (bool == 0)
+			moyBase = tab_moyenne;
+			
+		if (bool == 1){
+			
+			for(var i = 0 ; i < moyBase.length ; i++){
+				if (Math.abs((moyBase[i]) - (tab_moyenne[i])) > 10)
+					console.log('mouvement');
+			}
+		}
+		bool = 1;
+        //console.log(tab_moyenne);
+
+ 
+
+                    
+                    
+                
       
         //découpage de l'image non fonctionnel
         /*for(var k = 0; k <= 24; k++){
@@ -96,7 +134,7 @@
 		*/
 
         context.putImageData(imageData, 0, 0);
-        console.log(imageData);
+       // console.log(imageData);
     });
 
 
