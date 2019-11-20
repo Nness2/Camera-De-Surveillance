@@ -1,144 +1,161 @@
 <html>
-<body>
-<!-- Stream video via webcam -->
-<div class="video-wrap">
-  <video id="video" playsinline autoplay></video>
-</div>
-<button onclick="playAudio()" type="button">Play Audio</button>
-<audio id="myAudio">
-        <source src="sound/warning.mp3" type="audio/mpeg">
-</audio>
-<!-- Webcam video snapshot -->
-<canvas id="canvas" width="640" height="480"></canvas>
-
-
-<script>
-    'use strict';
-/*
-    var PORT = 33333;
-    var HOST = '127.0.0.1';
-
-    var dgram = require('dgram');
-    var message = new Buffer('frame: ' + frame);
-
-    var client = dgram.createSocket('udp4');
-    client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
-        if (err) throw err;
-        console.log('UDP message sent to ' + HOST +':'+ PORT);
-        client.close();
-    });
-*/
-	var x = document.getElementById("myAudio");
-    function playAudio(){
-        x.play();
-    }
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const errorMsgElement = document.querySelector('span#errorMsg');
-	var moyBase = new Array ();
-	var mouvementPic = new Array ();
-	var bool = 0;
-
-    var BASE64_MARKER = ';base64,';
-
-    const constraints = {
-        audio: false,
-        video: {
-            width: 640, height: 480
-        }
-    };
-
-    // Access webcam
-    async function init() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            handleSuccess(stream);
-        } catch (e) {
-            errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
-        }
-    }
-
-    // Success
-    function handleSuccess(stream) {
-        window.stream = stream;
-        video.srcObject = stream;
-    }
-
-    // Load init
-    init();
-    // Draw image
-    var context = canvas.getContext('2d');
-
-	function sleep (time) {
-		return new Promise((resolve) => setTimeout(resolve, time));
-	}
-
-
-	function snapshoterino(){
-
-        context.drawImage(video, 0, 0, 640, 480);
-        var imageData = context.getImageData(0, 0, 640, 480);
-
-
-        for (var i = 0, n = imageData.data.length; i < n; i += 4){
-            var moy = (imageData.data[i] + imageData.data[i+1] + imageData.data[i+2]) / 3
-            imageData.data[i] = moy;
-            imageData.data[i + 1] = moy;
-            imageData.data[i + 2] = moy;
-        }
-
-        
-        var tab_moyenne = new Array();
-        var moyenne = 0;
-        for(var i = 0 ; i < 480*4 ; i=i+80){
-            for(var j = 0; j < 640*4 ; j=j+80){
-                for(var yp = i; yp < i+80 ; yp=yp+4){
-                    for(var xp = j; xp < j +80; xp=xp+4){
-                        
-                        var moyenne = moyenne + imageData.data[yp * 640 + xp];
-                            
-                   }
-                }
-                tab_moyenne.push(moyenne/400);
-                moyenne = 0;
-            }
-
-        }
-		if (bool == 0)
-			moyBase = tab_moyenne;
-
-			
-			
-		if (bool == 1){
-			
-			for(var i = 0 ; i < moyBase.length ; i++){
-				if (Math.abs((moyBase[i]) - (tab_moyenne[i])) > 10)
-					console.log('mouvement');
-					mouvementPic = imageData.data;
-			}
-		}
+    <head>
+        <meta charset="utf-8" />
+        <title>MyCamera</title>
+    </head>
+	<body>
+		<!-- Stream video via webcam -->
+		<div class="video-wrap">
+			<video id="video" playsinline autoplay></video>	
+		</div>
+		<button onclick="playAudio()" type="button">Play Audio</button>
+		<audio id="myAudio">
+			<source src="warning.mp3" type="audio/mpeg">	
+		</audio>
+		<!-- Webcam video snapshot -->
+		<canvas id="canvas" width="640" height="480"></canvas>
 		
-		if (tab_moyenne[0] != 0) //A remplacer
-			bool = 1;
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+		<script>
+			'use strict';
+			
+			var socket = io.connect('http://localhost:8080');
+			var name = prompt('Quel est votre nom ?');
+				
+			var x = document.getElementById("myAudio");
+			
+			//Send name
+			socket.emit('name',  name);
+			var imageToSend = '';
+			
+			//Send frame 
+			socket.on('snapshot', function(snapshot) {
+				socket.emit('frame', imageToSend);
+			});
+			
+			socket.on('mouvement', function(mouvement) {
+				socket.emit('frame', mouvementPic);
+			});
+			
+			function playAudio(){
+				x.play();
+			}
+			
+			socket.on('alarm', function(alarm) {
+				playAudio();
+			});
+			
+			
 
-		//console.log(tab_moyenne);
-        context.putImageData(imageData, 0, 0);
-       
-    };
-	
-	function update_image_comp(){
-		bool = 0;
-	}
-	
-	
-	setInterval(snapshoterino, 500); //Compare frame toute les 0.5 sec
-	setInterval(update_image_comp, 60000); //Actualise l'image de reference toute les minutes
+			
+			const video = document.getElementById('video');
+			const canvas = document.getElementById('canvas');
+			const errorMsgElement = document.querySelector('span#errorMsg');
+			var moyBase = new Array ();
+			var mouvementPic = new Array ();
+			var bool = 0;
+			var BASE64_MARKER = ';base64,';
+			var run = 0;
+			
+			const constraints = {
+				audio: false,
+				video: {
+					width: 640, height: 480
+				}
+			};
+			
+			// Access webcam
+			async function init() {
+				try {
+					const stream = await navigator.mediaDevices.getUserMedia(constraints);
+					handleSuccess(stream);
+				} catch (e) {
+					errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+				}
+			}
+			
+			// Success
+			function handleSuccess(stream) {
+				window.stream = stream;
+				video.srcObject = stream;
+			}
+		
+			
+			// Load init
+			init();
+			// Draw image
+			var context = canvas.getContext('2d');
+			function sleep (time) {
+				return new Promise((resolve) => setTimeout(resolve, time));
+			}
+			
+			function snapshoterino(){
+				//Get base64
+				imageToSend = canvas.toDataURL();
+				context.drawImage(video, 0, 0, 640, 480);
+				var imageData = context.getImageData(0, 0, 640, 480);
+				for (var i = 0, n = imageData.data.length; i < n; i += 4){
+					var moy = (imageData.data[i] + imageData.data[i+1] + imageData.data[i+2]) / 3
+					imageData.data[i] = moy;
+					imageData.data[i + 1] = moy;
+					imageData.data[i + 2] = moy;
+				}
+				var tab_moyenne = new Array();
+				var moyenne = 0;
+				for(var i = 0 ; i < 480*4 ; i=i+80){
+					for(var j = 0; j < 640*4 ; j=j+80){
+						for(var yp = i; yp < i+80 ; yp=yp+4){
+							for(var xp = j; xp < j +80; xp=xp+4){
+								
+								var moyenne = moyenne + imageData.data[yp * 640 + xp];
+									
+						   }
+						}
+						tab_moyenne.push(moyenne/400);
+						moyenne = 0;
+					}
+				}
+				if (bool == 0)
+					moyBase = tab_moyenne;
+					
+					
+				if (bool == 1){
+					
+					for(var i = 0 ; i < moyBase.length ; i++){
+						if (Math.abs((moyBase[i]) - (tab_moyenne[i])) > 10)
+							console.log('mouvement');
+							mouvementPic = imageData.data; //remplacer par base64
+					}
+				}
+				
+				if (tab_moyenne[0] != 0) //A remplacer
+					bool = 1;
+				//console.log(tab_moyenne);
+				context.putImageData(imageData, 0, 0);
+			   
+			};
+			
+			function update_image_comp(){
+				bool = 0;
+			}
+
+			function test(){
+				socket.emit('test', '');
+			}
+			
+			//if (run == 1){
+				setInterval(snapshoterino, 500); //Compare frame toute les 0.5 sec
+				setInterval(update_image_comp, 60000); //Actualise l'image de reference toute les minutes
+				setInterval(test, 5000);
+			//}
 
 
-</script>
+
+		</script>
 
 
-</body>
+	</body>
 
 
 </html>

@@ -62,7 +62,7 @@ event = 'NULL'
 		return list
 
 
- #retourne true s'il un mouvement est détécté
+ #retourne true si un mouvement est détécté
  
 	def moovement_trigger(frame_list, seuil):
 		difference = frame_compare(frame_list)
