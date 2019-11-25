@@ -20,12 +20,12 @@ io.sockets.on('connection', function (socket) {
 		console.log(name);
     });
 	
-	socket.on('frame', function(imageToSend) {
-		console.log(imageToSend);
+	socket.on('mFrame', function(mFrame) {
+		console.log(mFrame);
     });
 	
 	socket.on('test', function(test) {
-        socket.emit('alarm', '');
+        socket.emit('mouvement', '');
     });
 });
 

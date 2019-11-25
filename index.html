@@ -9,9 +9,6 @@
 			<video id="video" playsinline autoplay></video>	
 		</div>
 		<button onclick="playAudio()" type="button">Play Audio</button>
-		<audio id="myAudio">
-			<source src="warning.mp3" type="audio/mpeg">	
-		</audio>
 		<!-- Webcam video snapshot -->
 		<canvas id="canvas" width="640" height="480"></canvas>
 		
@@ -29,34 +26,19 @@
 			socket.emit('name',  name);
 			var imageToSend = '';
 			
-			//Send frame 
-			socket.on('snapshot', function(snapshot) {
-				socket.emit('frame', imageToSend);
-			});
-			
-			socket.on('mouvement', function(mouvement) {
-				socket.emit('frame', mouvementPic);
-			});
-			
-			function playAudio(){
-				x.play();
-			}
-			
-			socket.on('alarm', function(alarm) {
-				playAudio();
-			});
-			
-			
-
 			
 			const video = document.getElementById('video');
 			const canvas = document.getElementById('canvas');
 			const errorMsgElement = document.querySelector('span#errorMsg');
 			var moyBase = new Array ();
-			var mouvementPic = new Array ();
+			var tolerance = 0;
+			var tolerancefix = 0;
+			var mouvementPic = '';
 			var bool = 0;
 			var BASE64_MARKER = ';base64,';
 			var run = 0;
+			var audio = new Audio('https://freesound.org/data/previews/470/470504_2694940-lq.mp3');
+			var listMouvementFrame = new Array ();
 			
 			const constraints = {
 				audio: false,
@@ -64,6 +46,23 @@
 					width: 640, height: 480
 				}
 			};
+			
+			//Send frame 
+			socket.on('snapshot', function(snapshot) {
+				socket.emit('frame', imageToSend);
+			});
+			
+			socket.on('mouvement', function(mouvement) {
+				socket.emit('mFrame', mouvementPic);
+				tolerancefix = 0;
+			});
+			
+			
+			socket.on('alarm', function(alarm) {
+				
+				audio.play();
+			});
+			
 			
 			// Access webcam
 			async function init() {
@@ -123,10 +122,19 @@
 				if (bool == 1){
 					
 					for(var i = 0 ; i < moyBase.length ; i++){
-						if (Math.abs((moyBase[i]) - (tab_moyenne[i])) > 10)
+						if (Math.abs((moyBase[i]) - (tab_moyenne[i])) > 10){
 							console.log('mouvement');
-							mouvementPic = imageData.data; //remplacer par base64
+							//listMouvementFrame.push(imageToSend);
+							tolerance ++;
+						}
+							
 					}
+					if (tolerance > tolerancefix){
+						tolerancefix = tolerance;
+						mouvementPic = imageToSend;
+						
+					}
+					tolerance = 0;
 				}
 				
 				if (tab_moyenne[0] != 0) //A remplacer
@@ -147,7 +155,7 @@
 			//if (run == 1){
 				setInterval(snapshoterino, 500); //Compare frame toute les 0.5 sec
 				setInterval(update_image_comp, 60000); //Actualise l'image de reference toute les minutes
-				setInterval(test, 5000);
+				setInterval(test, 15000);
 			//}
 
 
