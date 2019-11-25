@@ -6,9 +6,8 @@
 	<body>
 		<!-- Stream video via webcam -->
 		<div class="video-wrap">
-			<video id="video" playsinline autoplay></video>	
+			<video hidden id="video" playsinline autoplay  ></video>	
 		</div>
-		<button onclick="playAudio()" type="button">Play Audio</button>
 		<!-- Webcam video snapshot -->
 		<canvas id="canvas" width="640" height="480"></canvas>
 		
@@ -19,8 +18,6 @@
 			
 			var socket = io.connect('http://localhost:8080');
 			var name = prompt('Quel est votre nom ?');
-				
-			var x = document.getElementById("myAudio");
 			
 			//Send name
 			socket.emit('name',  name);
@@ -46,6 +43,7 @@
 					width: 640, height: 480
 				}
 			};
+			
 			
 			//Send frame 
 			socket.on('snapshot', function(snapshot) {
@@ -73,6 +71,14 @@
 					errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
 				}
 			}
+			
+			//var STR = document.getElementById('canvas');
+
+
+			
+			//console.log(STR);
+			
+			
 			
 			// Success
 			function handleSuccess(stream) {
@@ -147,19 +153,28 @@
 			function update_image_comp(){
 				bool = 0;
 			}
-
 			function test(){
-				socket.emit('test', '');
+				//socket.emit('tezst', '');
+				canvas.toBlob(function(blob) {
+				  var newImg = document.createElement('img'),
+					  url = URL.createObjectURL(blob);
+
+				  newImg.onload = function() {
+					// no longer need to read the blob so it's revoked
+					URL.revokeObjectURL(url);
+				  };
+				  newImg.src = url;
+				  document.body.appendChild(newImg);
+				  //console.log(newImg.src);
+				  socket.emit('stream', newImg.src.substring(5, newImg.src.length));
+			});
 			}
 			
 			//if (run == 1){
-				setInterval(snapshoterino, 500); //Compare frame toute les 0.5 sec
+				setInterval(snapshoterino, 250); //Compare frame toute les 0.5 sec
 				setInterval(update_image_comp, 60000); //Actualise l'image de reference toute les minutes
-				setInterval(test, 15000);
+				setInterval(test, 1000);
 			//}
-
-
-
 		</script>
 
 
