@@ -97,7 +97,7 @@ Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des camer
 Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
 
 Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".  
-Bouton Stream : Envoie "stream" au client puis attend un flux vidéo en binaire qui sera affiché à l'écran (1 octet par pixel, noir et blanc) 640*360. Le tout encodé en H.264 "stream: <blop:lien>".  
+Bouton Stream : Envoie "stream" au client puis attend une succession de lien URL blob correspondant au stream.  
 Bouton Stop : Envoie "stop" au client.  
 Bouton Alarme : Envoie "alarm" au client.  
 
