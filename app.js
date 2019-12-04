@@ -27,15 +27,11 @@ io.sockets.on('connection', function (socket) {
 	
 	socket.on('test', function(test) {
         socket.emit('mouvement', '');
+		
     });
 	
 	socket.on('stream', function(stream) {
-		//reader.readAsDataURL(stream);
-		//console.log(reader.result);
-        //var fileBuffer = new Buffer(stream, 'base64');
-		//fs.writeFileSync("fileName", fileBuffer);
-		//console.log(fileBuffer);
-		//fs.writeFileSync(fileName, fileBuffer);
+		console.log(stream);
     });
 });
 

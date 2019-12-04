@@ -34,12 +34,12 @@ event = 'NULL'
 
 #joue la piste sonore reçue
 
-	def play_sound(piste): 
+	def playSound(piste): 
 
 
 #compare les pixels d'une succession de capture afin de détécter le mouvement (méthode à définir)
 
-	def frame_compare(frame_list): 	
+	def frameCompare(frameList): 	
 
 
 #permet d'envoyer des requetes au serveur
@@ -54,9 +54,9 @@ event = 'NULL'
 
 #stoque les dernières frames pour les comparaisons
 
-	def update_stream(last_frame, frame_list): 
-		liste = frame_list
-		list.add(last_frame)
+	def updateStream(lastFrame, frameList): 
+		liste = frameList
+		list.add(lastFrame)
 		if len(list) < size:
 			list.remove() #retire le plus ancien
 		return list
@@ -64,8 +64,8 @@ event = 'NULL'
 
  #retourne true si un mouvement est détécté
  
-	def moovement_trigger(frame_list, seuil):
-		difference = frame_compare(frame_list)
+	def moovementTrigger(frameList, seuil):
+		difference = frameCompare(frameList)
 		if difference > seuil:
 			return True
 		else:
@@ -74,20 +74,20 @@ event = 'NULL'
 		
 #bloucle principale du programme
 
-	def camera_surveillance(): 
-		open_camera()
+	def cameraSurveillance(): 
+		openCamera()
 		send('start')
 		while (True):
-			list = update_stream()
+			list = updateStream()
 			rcv = receive()
-			if moovemet_trigger(list, seuil):
+			if moovemetTrigger(list, seuil):
 				send('snap:'+base64)
 			if rcv == 'stream':
-				send('stream:'+stream_data)
+				send('stream:'+streamData)
 			if rcv == 'stop':
-				stop_stream()
+				stopStream()
 			if rcv == 'sound':
-				play_sound(sound)
+				playSound(sound)
 
 
 
@@ -97,15 +97,15 @@ Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des camer
 Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
 
 Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".  
-Bouton Stream : Envoie "stream" au client puis attend un flux vidéo en binaire qui sera affiché à l'écran (1 octet par pixel, noir et blanc) 640*360. Le tout encodé en H.264.  
+Bouton Stream : Envoie "stream" au client puis attend un flux vidéo en binaire qui sera affiché à l'écran (1 octet par pixel, noir et blanc) 640*360. Le tout encodé en H.264 "stream: <blop:lien>".  
 Bouton Stop : Envoie "stop" au client.  
 Bouton Alarme : Envoie "alarm" au client.  
 
 Dans la liste de cameras :  
 -Si le nom de la camera est verte cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.  
- Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.  
--Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste et enregistre une image en base64. "detected: <string>".  
-Bouton Mouvement : S'il y en a une, affiche l'image du mouvement correspondant à la camera. Le nom redevient gris.  
+-Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.  
+-Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste et enregistre une image en base64.  
+Bouton Mouvement : S'il y en a une, reçois "mouvement: <string>" contenant l'image du mouvement correspondant à la camera en base64 et l'affiche. Le nom redevient gris.  
 Si un client ne répond pas, on le retire de la liste.  
 
 
