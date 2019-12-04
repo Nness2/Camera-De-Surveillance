@@ -97,15 +97,15 @@ Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des camer
 Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
 
 Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".  
-Bouton Stream : Envoie "stream" au client puis attend une succession de lien URL blob correspondant au stream.  
+Bouton Stream : Envoie "stream" au client puis attend une succession de lien URL blob du stream, "stream: "blob:lien"".
 Bouton Stop : Envoie "stop" au client.  
 Bouton Alarme : Envoie "alarm" au client.  
 
 Dans la liste de cameras :  
--Si le nom de la camera est verte cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.  
+-Si le nom de la camera est vert cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.  
 -Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.  
--Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste et enregistre une image en base64.  
-Bouton Mouvement : S'il y en a une, reçois "mouvement: <string>" contenant l'image du mouvement correspondant à la camera en base64 et l'affiche. Le nom redevient gris.  
+-Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste.
+Bouton du nom en vert : Envoie "mouvement" au client puis attend "mouvement: <string>" contenant l'image du mouvement en base64 et l'affiche. Le nom redevient gris.  
 Si un client ne répond pas, on le retire de la liste.  
 
 
