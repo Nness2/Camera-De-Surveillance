@@ -1,6 +1,7 @@
 # Camera-De-Surveillance
 Projet - Traitement de données &amp; Embarqué - N.Prieur
 
+
 Concept:
 
 Cette apllication web permet de detecter le mouvement à partir d'une caméra afin de faire de la surveillance. L'utilisateur est informé en cas de mouvement 
@@ -9,16 +10,22 @@ Le programme doit pouvoir fonctionner avec la caméra embarquée d'un ordinateur
 
 
 
-Le scénario de ce programme est le suivant: 
+Modèle de données / Protocole / scénario:  
 
-Au lancement, le programme va envoyer 'start' pour indiquer qu'une caméra est online. Sur la page serveur, il est maintenant affiché online. 
-La caméra s'allume, 10 sec plus tard (le temps de sortir du champ) l'agorithme de détéction se met en marche.
-Si un mouvement est détécté, le programme envoie une image sur le serveur.
-Si l'utilisateur clique sur l'image, le programme commence à envoyer le flux au serveur en UDP. 
-Si l'utilisateur clique sur la vidéo, elle s'arrête et il est de nouveau affiché "online", le serveur envoie 'stop' au client.
-Enfin, il y a sur la page serveur des boutons permettant, à n'importe quel moment, d'envoyer du son à diffuser coté client. 
+Le serveur reçoit "projet: CameraDeSurveillance" pour indiquer le nom du projet.
+Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des cameras connecté.  
+Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
 
+Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".  
+Bouton Stream : Envoie "stream" au client puis attend une succession d'image en base64 du stream, stream: "base64".
+Bouton Alarme : Envoie "alarm" au client.  
 
+Dans la liste de cameras :  
+-Si le nom de la camera est vert cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.  
+-Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.  
+-Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste.
+Bouton du nom en vert : Envoie "mouvement" au client puis attend "mouvement: <string>" contenant l'image du mouvement en base64 et l'affiche. Le nom redevient gris.  
+Si un client ne répond pas, on le retire de la liste. 
 
 
 
@@ -88,25 +95,7 @@ event = 'NULL'
 				stopStream()
 			if rcv == 'sound':
 				playSound(sound)
-
-
-
-Modèle de données / Protocole :  
-
-Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des cameras connecté.  
-Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
-
-Bouton Snapshot : Envoie  "snapshot" au client puis attend une image en base64, pour l'afficher à l'écran. "frame: <string>".  
-Bouton Stream : Envoie "stream" au client puis attend une succession de lien URL blob du stream, "stream: "blob:lien"".
-Bouton Stop : Envoie "stop" au client.  
-Bouton Alarme : Envoie "alarm" au client.  
-
-Dans la liste de cameras :  
--Si le nom de la camera est vert cela veut dire qu'il y a eu une détection de mouvement et qu'une image du mouvement est disponible.  
--Si le nom de la camera est gris c'est que la camera n'a toujours rien détecté.  
--Si le serveur reçoit "detected" change la couleur du nom de la camera correspondante en vert dans la liste.
-Bouton du nom en vert : Envoie "mouvement" au client puis attend "mouvement: <string>" contenant l'image du mouvement en base64 et l'affiche. Le nom redevient gris.  
-Si un client ne répond pas, on le retire de la liste.  
+ 
 
 
 Visualization:
