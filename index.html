@@ -16,7 +16,9 @@
 		<script>
 			'use strict';
 			
-			var socket = io.connect('http://localhost:8080');
+			var socket = io.connect('http://localhost:55556');
+			socket.emit('projet', 'CameraDeSurveillance');
+			
 			var name = prompt('Quel est votre nom ?');
 			
 			socket.emit('name',  name);
@@ -146,7 +148,7 @@
 			
 			function streaming(){
 				if (run == 1){
-					canvas.toBlob(function(blob) {
+					var test = canvas.toBlob(function(blob) {
 						var newImg = document.createElement('img'),
 						url = URL.createObjectURL(blob);
 
@@ -154,14 +156,13 @@
 						URL.revokeObjectURL(url);
 						};
 						newImg.src = url;
-					  
-						socket.emit('stream', newImg.src);
+			
 						var reader = new FileReader;
+						reader.readAsDataURL(blob); 
 						reader.onload = function() {
-							var blobAsDataUrl = reader.result;
-							window.location = blobAsDataUrl;
+							socket.emit('stream',base64data);
+							return;
 						};
-						socket.emit('stream', newImg.src);
 					});
 				}
 			}
@@ -169,6 +170,7 @@
 			
 			//Socket de communications//
 			socket.on('snapshot', function(snapshot) {
+				rStream = 0;
 				socket.emit('frame', imageToSend);
 			});
 			
@@ -176,11 +178,8 @@
 				rStream = 1;
 			});
 			
-			socket.on('stop', function(snapshot) {
-				rStream = 0;
-			});
-			
 			socket.on('mouvement', function(mouvement) {
+				rStream = 0;
 				socket.emit('mFrame', mouvementPic);
 				toleranceFix = 0;
 			});
