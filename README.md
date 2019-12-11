@@ -1,6 +1,6 @@
 # Camera-De-Surveillance
 Projet - Traitement de données &amp; Embarqué - N.Prieur
-
+  
 
 Concept:
 
@@ -8,11 +8,11 @@ Cette apllication web permet de detecter le mouvement à partir d'une caméra af
 et il lui est possible d'accés aux images en temps réel. Il lui est aussi possible d'envoyer des bandes sonore pré-enregistré.
 Le programme doit pouvoir fonctionner avec la caméra embarquée d'un ordinateur, une camera USB et avec la camera d'un téléphone.
 
-
+  
 
 Modèle de données / Protocole / scénario:  
 
-Le serveur reçoit "projet: CameraDeSurveillance" pour indiquer le nom du projet.
+Le serveur reçoit "projet: CameraDeSurveillance" pour indiquer le nom du projet.  
 Lorsque le serveur reçoit "name: <name>" name est ajouté à la liste des cameras connecté.  
 Lorsque l'on clique sur un nom de la liste, toutes actions sera faite sur cette dernière.  
 
@@ -28,7 +28,7 @@ Bouton du nom en vert : Envoie "mouvement" au client puis attend "mouvement: <st
 Si un client ne répond pas, on le retire de la liste. 
 
 
-
+  
 Programme à implémenter:
 
 La première étape du développement consistera en la mise en place d'un programme capable de détécter le mouvement.
@@ -91,8 +91,6 @@ event = 'NULL'
 				send('snap:'+base64)
 			if rcv == 'stream':
 				send('stream:'+streamData)
-			if rcv == 'stop':
-				stopStream()
 			if rcv == 'sound':
 				playSound(sound)
  
